@@ -1,0 +1,200 @@
+{% extends 'auth/templates/base/base.html' %}
+
+{% block title %}Home
+{% endblock title %}
+
+{% block head %}
+{% endblock head %}
+
+<body>
+        <!-- Content -->
+        <div id="content" class="colM">
+
+          <h1>Add course</h1>
+
+          <div id="content-main">
+
+
+
+<form method="post" id="course_form" novalidate="">
+    <input type="hidden" name="csrfmiddlewaretoken" value="TDBpnThoOLLOTjTcZHBxPCCAzPQjnoTFJpyep3sJOgqjH4Zj2dYncYlpPcdR0a3D">
+<div>
+
+
+
+
+
+
+
+  <fieldset class="module aligned ">
+    <h2>UPDATE BY ADMIN</h2>
+
+
+        <div class="form-row field-title">
+
+
+                <div>
+
+
+                        <label class="required" for="id_title">Title:</label>
+
+                            <input type="text" name="title" class="vTextField" maxlength="100" required="" id="id_title">
+
+
+
+                </div>
+
+        </div>
+
+        <div class="form-row field-description">
+
+
+                <div>
+
+
+                        <label class="required" for="id_description">Description:</label>
+
+                            <textarea name="description" cols="40" rows="10" class="vLargeTextField" required="" id="id_description"></textarea>
+
+
+
+                </div>
+
+        </div>
+
+        <div class="form-row field-thumbnail_url">
+
+
+                <div>
+
+
+                        <label class="required" for="id_thumbnail_url">Thumbnail url:</label>
+
+                            <input type="text" name="thumbnail_url" class="vTextField" maxlength="100" required="" id="id_thumbnail_url">
+
+
+
+                </div>
+
+        </div>
+
+        <div class="form-row field-course_type">
+
+
+                <div>
+
+
+                        <label class="required" for="id_course_type">Course type:</label>
+
+                            <select name="course_type" id="id_course_type">
+  <option value="FREE" selected="">FREE</option>
+
+  <option value="PAID">PAID</option>
+
+</select>
+
+
+
+                </div>
+
+        </div>
+
+        <div class="form-row field-course_length">
+
+
+                <div>
+
+
+                        <label class="required" for="id_course_length">Course length:</label>
+
+                            <input type="text" name="course_length" class="vTextField" maxlength="20" required="" id="id_course_length">
+
+
+
+                </div>
+
+        </div>
+
+        <div class="form-row field-course_price">
+
+
+                <div>
+
+
+                        <label class="required" for="id_course_price">Course price:</label>
+
+                            <input type="number" name="course_price" value="0" class="vIntegerField" required="" id="id_course_price">
+
+
+
+                </div>
+
+        </div>
+
+</fieldset>
+
+
+  <fieldset class="module aligned ">
+    <h2>UPDATE BY SYSTEM</h2>
+
+
+        <div class="form-row field-course_slug">
+
+
+                <div>
+
+
+                        <label>Course slug:</label>
+
+                            <div class="readonly">-</div>
+
+
+
+                </div>
+
+        </div>
+
+</fieldset>
+
+
+
+
+
+<div class="submit-row">
+
+<input type="submit" value="Save" class="default" name="_save">
+
+
+<input type="submit" value="Save and add another" name="_addanother">
+<input type="submit" value="Save and continue editing" name="_continue">
+
+
+</div>
+
+
+
+    <script id="django-admin-form-add-constants" src="/static/admin/js/change_form.js" data-model-name="course" async="">
+    </script>
+
+
+
+
+<script id="django-admin-prepopulated-fields-constants" src="/static/admin/js/prepopulate_init.js" data-prepopulated-fields="[]">
+</script>
+
+
+</div>
+</form></div>
+
+
+          <br class="clear">
+        </div>
+        <!-- END Content -->
+        <div id="footer"></div>
+      </div>
+    </div>
+</div>
+<!-- END Container -->
+
+
+</body>

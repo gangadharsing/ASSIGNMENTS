@@ -19,7 +19,7 @@ def game():
 
     guesses = ''
 
-    turns = 12
+    turns = 6
 
     while turns > 0:
 

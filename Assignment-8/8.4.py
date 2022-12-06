@@ -1,18 +1,3 @@
-# string=input("Enter the coordinate without braket in following format   x1,y1 x2,y2 x3,y3 ......  xn,yn :")
-# coordinates=string.split(" ")
-# list_of_coordinates=[]
-# for x in coordinates:
-#     list_of_coordinates.append(coordinates.split(","))
-# intlist=[eval(i) for i in list_of_coordinates]
-# lowest=(min(min(list_of_coordinates)))
-# updated_coordinates=[]
-# if int(lowest)<0:
-#     to_add=0-int(lowest)
-#     for x in range(0,len(list_of_coordinates)):
-#         updated_coordinates.append(intlist[x]+to_add)
-# else:
-#     print("There is no negative")
-#     print(list_of_coordinates)
 
 list_x=[]
 list_y=[]
