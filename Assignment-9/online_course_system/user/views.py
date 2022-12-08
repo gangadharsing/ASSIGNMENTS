@@ -13,7 +13,7 @@ def signin(request):
     if request.method == "POST":
         if User.objects.filter(email=request.POST.get('email')).exists():
             request.session['email'] = request.POST.get('email')
-            request.session['password'] = request.POST.get('password1')
+            request.session['password'] = request.POST.get('password')
             request.session['usertype'] = request.POST.get('usertype')
             try:
                 otp = OTPLog.objects.get(email=request.POST.get('email')).otp
@@ -23,14 +23,14 @@ def signin(request):
 
             message = 'Your OTP is: ' + str(otp)
             email_message(request.POST.get('email'), 'Registration OTP', message)
-            return redirect("login/otp")
-        # user = authenticate(request, username=username, password=password)
-        #
-        # if user is not None:
-        #     login(request, user)
-        #     return redirect("/")
-        # else:
-        #     context['login_error'] = "Invalid credentials!"
+
+            user = authenticate(request, username=request.session['email'], password=request.session['password'])
+
+            if user is not None:
+                login(request, user)
+                return redirect("login/otp")
+            else:
+                context['login_error'] = "Invalid credentials!"
     return render(request, 'user/login.html', context)
 
 
@@ -80,7 +80,7 @@ def reg_otp_view(request):
         otp = OTPLog.objects.get(email=request.session['email'])
         if int(request.POST.get('otp')) == int(otp.otp):
             User.objects.create_user(
-                username=request.session['usertype'],
+                usertype=request.session['usertype'],
                 first_name=request.session['f_name'],
                 last_name=request.session['l_name'],
                 email=request.session['email'],
@@ -91,7 +91,7 @@ def reg_otp_view(request):
 
             if user is not None:
                 login(request, user)
-            return redirect('/')
+                return redirect('user_selection')
         else:
             context['error'] = "Wrong OTP"
     return render(request, 'user/otp.html', context)
@@ -101,7 +101,7 @@ def login_otp_view(request):
     context = {
         'title': 'OTP Verification',
         'email': request.session['email'],
-        'usertype':request.session['usertype']
+        'usertype': request.session['usertype']
     }
 
     if request.POST == "GET":
@@ -109,31 +109,30 @@ def login_otp_view(request):
 
     print(OTPLog.objects.get(email=request.session['email']).otp)
     if request.method == "POST":
+        request.session['usertype']=request.POST.get('user_type')
         otp = OTPLog.objects.get(email=request.session['email'])
         if int(request.POST.get('otp')) == int(otp.otp):
-
-            user = authenticate(request, username=request.session['email'], password=request.session['password'])
-
-            if user is not None:
-                 login(request, user)
-            return redirect('user_selection',context)
+            if request.session['usertype'] == 'teacher':
+                return redirect('/teacher/index')
+            elif request.session['usertype'] == 'student':
+                return redirect('/student/index')
+                # return redirect('user_selection')
         else:
             context['error'] = "Wrong OTP"
-    return render(request, 'user/otp.html', context)
+    return render(request, 'user/otp.html',context)
 
 
 def logout_view(request):
     logout(request)
-    return render(request, ' ')
+    return render(request,'dashboard/home.html')
 
 
-def user_selection(request,context):
-    context1 = context
+def user_selection(request):
     if request.method == "GET":
-        if context1.usertype=='teacher':
-            return redirect('teacher/index.html')
-        elif context1.usertype=='student':
-            return redirect('student/index.html')
+        if (request.GET.get('user_type')) ==('teacher'):
+            return redirect('teacher/index')
+        elif (request.GET.get('user_type'))==('student'):
+            return redirect('student/index')
         else:
-            return render(request, 'student/index.html', context)
-    return render(request,'user/login.html',context)
+            return render(request,'login.html')
+    return render(request,'otp.html')

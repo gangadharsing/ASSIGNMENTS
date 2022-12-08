@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth.views import LogoutView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from .views import signin, signup, reg_otp_view, login_otp_view, logout_view,user_selection
-
+from templates import *
 urlpatterns = [
     path('signin', signin, name='login'),
     path('signup', signup, name='register'),

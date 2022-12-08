@@ -9,7 +9,10 @@ def info(request):
         return render(request, "student/info.html")
     return redirect("home")
 
-    
+def index(request):
+    return render(request,"student/index.html")
+
+
 def ChangePassword(request):
     if request.user.is_authenticated == True:
         if request.method == 'POST':
@@ -31,3 +34,7 @@ def UserCourse(request):
         }
         return render(request, "student/user_course.html", contest)
     return redirect("home")
+
+def logout_view(request):
+    logout(request)
+    return render(request,'dashboard/home.html')
