@@ -1,9 +1,52 @@
+{% extends 'teacher/index.html' %}
 <html>
+{% load static %}
 {% block title %}Home
 {% endblock title %}
 
-{% block head %}
-{% endblock head %}
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+  <title> - StartUP!</title>
+  {% block head %}
+  {% endblock head %}
+  <style>
+    .showpassword {
+      cursor: pointer;
+    }
+
+    .showpasswordsingup {
+      cursor: pointer;
+    }
+    html, body{
+        min-height: 100% !important;
+    }
+    section{
+        border-radius: 10px !important;
+    }
+    /*
+ * Footer
+ */
+    .blog-footer {
+      padding: 2.5rem 0;
+      color: #999;
+      text-align: center;
+      background-color: #f9f9f9;
+      border-top: .05rem solid #e5e5e5;
+    }
+
+    .blog-footer p:last-child {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+{% block body %}
 
 <body>
         <!-- Content -->
@@ -15,8 +58,8 @@
 
 
 
-<form method="post" id="course_form" novalidate="">
-    <input type="hidden" name="csrfmiddlewaretoken" value="TDBpnThoOLLOTjTcZHBxPCCAzPQjnoTFJpyep3sJOgqjH4Zj2dYncYlpPcdR0a3D">
+<form method="post" id="course_form" novalidate="">{% csrf_token %}
+<!--    <input type="hidden" name="csrfmiddlewaretoken" value="TDBpnThoOLLOTjTcZHBxPCCAzPQjnoTFJpyep3sJOgqjH4Zj2dYncYlpPcdR0a3D">-->
 <div>
 
   <fieldset class="module aligned ">
@@ -124,21 +167,21 @@
         </div>
 
 
-        <div class="form-row field-course_slug">
+<!--        <div class="form-row field-course_slug">-->
 
 
-                <div>
+<!--                <div>-->
 
 
-                        <label>Course slug:</label>
+<!--                        <label>Course slug:</label>-->
 
-                            <div class="readonly">-</div>
+<!--                            <div class="readonly">-</div>-->
 
 
 
-                </div>
+<!--                </div>-->
 
-        </div>
+<!--        </div>-->
 
 </fieldset>
 
@@ -182,6 +225,23 @@
 </div>
 <!-- END Container -->
 
+<!-- Optional JavaScript -->
+  {% if user.is_authenticated %}{% else %}
+  <script type="text/javascript" src="{% static 'js/validation.js' %}"></script>
+  {% endif %}
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+    crossorigin="anonymous"></script>
 
+{% block js %}
+{% endblock js %}
+{% endblock body %}
 </body>
 </html>

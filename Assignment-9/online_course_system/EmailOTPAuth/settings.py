@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['otpauth.herokuapp.com', '127.0.0.1']
 
 INSTALLED_APPS = [
     'dashboard',
+    'paypal.standard.ipn',
     'user',
     'course',
     'student',
@@ -88,6 +89,8 @@ DATABASES = {
 }
 
 
+# AUTH_USER_MODEL = 'user.CustomUser'
+
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -141,3 +144,8 @@ EMAIL_HOST_PASSWORD ='tmxilqbsekckwzxi' # os.environ.get('TEST_PASS')
 
 import django_heroku
 django_heroku.settings(locals())
+
+
+PAYPAL_RECEIVER_EMAIL = 'coursepayment@gmail.com'
+PAYPAL_TEST = True
+

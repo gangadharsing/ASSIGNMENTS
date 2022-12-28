@@ -22,7 +22,12 @@
     .showpasswordsingup {
       cursor: pointer;
     }
-
+    html, body{
+        min-height: 100% !important;
+    }
+    section{
+        border-radius: 10px !important;
+    }
     /*
  * Footer
  */
@@ -39,17 +44,17 @@
     }
   </style>
 </head>
-
+{% block body %}
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom shadow-sm">
     {% if user.is_authenticated %}
     <div class="container">
-      <a class="navbar-brand" href="{% url 'home' %}">StartUP</a>
+      <a class="navbar-brand" href="{% url 'index' %}">StartUP
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-
+      </a>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
@@ -58,31 +63,59 @@
 
         </ul>
         <ul class="navbar-nav">
-
           <li class="nav-item dropdown active">
-        <a class="nav-link dropdown-toggle" href="#" id="studentDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-         <img src="https://img.icons8.com/color/24/000000/user-male-circle.png"/> {{ request.user|upper }}
-        </a>
-        <div class="dropdown-menu" aria-labelledby="studentDropdown">
-          <a class="dropdown-item" href="{% url 'info' %}">User Account</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="{% url 'logout_view' %}">Logout</a>
-        </div>
-             {% else %}
-          <li class="nav-item active">
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-outline-success mx-2 my-1 btn-sm" data-toggle="modal"
-              data-target="#loginModal">Login</button>
+            <a class="nav-link dropdown-toggle" href="#" id="studentDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <img src="https://img.icons8.com/color/24/000000/user-male-circle.png"/> {{ request.user|upper }}
+            </a>
+              <div class="dropdown-menu" aria-labelledby="studentDropdown">
+              <a class="dropdown-item" href="{% url 'info' %}">User Account</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'logout_view' %}">Logout</a>
+              </div>
           </li>
-          <li class="nav-item">
-            <button type="button" class="btn btn-success mx-1 my-1 btn-sm" data-toggle="modal"
-              data-target="#singupModal">Ragister</button>
-          </li>
+          {% else %}
+<!--          <li class="nav-item active">-->
+<!--            &lt;!&ndash; Button trigger modal &ndash;&gt;-->
+<!--            <button type="button" class="btn btn-outline-success mx-2 my-1 btn-sm" data-toggle="modal"-->
+<!--              data-target="#loginModal">Login</button>-->
+<!--          </li>-->
+<!--          <li class="nav-item">-->
+<!--            <button type="button" class="btn btn-success mx-1 my-1 btn-sm" data-toggle="modal"-->
+<!--              data-target="#singupModal">Ragister</button>-->
+<!--          </li>-->
           {% endif %}
-      </li>
         </ul>
       </div>
-    </div>
+      </div>
   </nav>
+
+  <div class="container">
+    <form class="search" action="{% url 'search' %}">
+  <input type="text" placeholder="Search.." name="search">
+<!--  <a href="{% url 'search' %}">-->
+      <button type="search"><i class="fa fa-search"></i></button>
+<!--  </a>-->
+</form>
+  </div>
+
+
+  <!-- Optional JavaScript -->
+  {% if user.is_authenticated %}{% else %}
+  <script type="text/javascript" src="{% static 'js/validation.js' %}"></script>
+  {% endif %}
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+    crossorigin="anonymous"></script>
+
+{% block js %}
+{% endblock js %}
+{% endblock body %}
 </body>
 </html>

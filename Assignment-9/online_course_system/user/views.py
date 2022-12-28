@@ -1,4 +1,5 @@
 from django.contrib.auth import login, authenticate, logout
+from user.models import User
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from .models import OTPLog
@@ -86,12 +87,15 @@ def reg_otp_view(request):
                 email=request.session['email'],
                 password=request.session['password']
             )
-
+            request.session['usertype'] = request.POST.get('user_type')
             user = authenticate(request, username=request.session['email'], password=request.session['password'])
 
             if user is not None:
                 login(request, user)
-                return redirect('user_selection')
+                if request.session['usertype'] == 'teacher':
+                    return redirect('/teacher/index')
+                elif request.session['usertype'] == 'student':
+                    return redirect('/student/index')
         else:
             context['error'] = "Wrong OTP"
     return render(request, 'user/otp.html', context)
@@ -127,12 +131,12 @@ def logout_view(request):
     return render(request,'dashboard/home.html')
 
 
-def user_selection(request):
-    if request.method == "GET":
-        if (request.GET.get('user_type')) ==('teacher'):
-            return redirect('teacher/index')
-        elif (request.GET.get('user_type'))==('student'):
-            return redirect('student/index')
-        else:
-            return render(request,'login.html')
-    return render(request,'otp.html')
+# def user_selection(request):
+#     if request.method == "GET":
+#         if (request.GET.get('user_type')) ==('teacher'):
+#             return redirect('teacher/index')
+#         elif (request.GET.get('user_type'))==('student'):
+#             return redirect('student/index')
+#         else:
+#             return render(request,'login.html')
+#     return render(request,'otp.html')

@@ -8,4 +8,5 @@ urlpatterns = [
     path('course/', include('course.urls'), name='course'),
     path('student/', include('student.urls'), name='student'),
     path('teacher/', include('teacher.urls'), name='teacher'),
+    path('paypal/', include('paypal.standard.ipn.urls')),
 ]

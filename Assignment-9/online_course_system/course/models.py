@@ -55,8 +55,8 @@ LECTURE_TYPE = [
 class Lecture(models.Model):
     title = models.CharField(max_length=100)
     video_url = models.CharField(max_length=100)
-    section = models.ForeignKey(Section, on_delete=models.CASCADE)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, blank=True)
+    section = models.ForeignKey(Section, on_delete=models.DO_NOTHING)
+    course = models.ForeignKey(Course, on_delete=models.DO_NOTHING, blank=True)
     lecture_slug = models.SlugField(default="-")
     lecture_type = models.CharField(max_length=12, choices=LECTURE_TYPE, default="PREMIUM")
 
@@ -74,8 +74,8 @@ class Lecture(models.Model):
 
 class LectureComment(models.Model):
     comment = models.TextField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    lecture = models.ForeignKey(Lecture, on_delete=models.DO_NOTHING)
     timestamp = models.DateTimeField(default=now)
 
     def __str__(self):

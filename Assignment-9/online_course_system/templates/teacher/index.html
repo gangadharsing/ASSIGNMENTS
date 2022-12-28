@@ -1,14 +1,55 @@
 <html>
+{% load static %}
 {% block title %}Home
 {% endblock title %}
 
-{% block head %}
-{% endblock head %}
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+  <title> - StartUP!</title>
+  {% block head %}
+  {% endblock head %}
+  <style>
+    .showpassword {
+      cursor: pointer;
+    }
+
+    .showpasswordsingup {
+      cursor: pointer;
+    }
+    html, body{
+        min-height: 100% !important;
+    }
+    section{
+        border-radius: 10px !important;
+    }
+    /*
+ * Footer
+ */
+    .blog-footer {
+      padding: 2.5rem 0;
+      color: #999;
+      text-align: center;
+      background-color: #f9f9f9;
+      border-top: .05rem solid #e5e5e5;
+    }
+
+    .blog-footer p:last-child {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+{% block body %}
 
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom shadow-sm">
-    {% if user.is_authenticated %}
+<!--    {% if user.is_authenticated %}-->
     <div class="container">
       <a class="navbar-brand" href="{% url 'home' %}">StartUP</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -20,6 +61,9 @@
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
             <a class="nav-link" href="{% url 'addcourse' %}">Add Courses </a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'courselist' %}">Course Details</a>
           </li>
           <li class="nav-item active">
             <a class="nav-link" href="{% url 'updatecourse' %}">Update Course</a>
@@ -36,27 +80,45 @@
          <img src="https://img.icons8.com/color/24/000000/user-male-circle.png"/> {{ request.user|upper }}
         </a>
         <div class="dropdown-menu" aria-labelledby="studentDropdown">
-          <a class="dropdown-item" href="{% url 'info' %}">User Account</a>
+          <a class="dropdown-item" href="{% url 'info' }">User Account</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
         </div>
       </li>
-          {% else %}
-          <li class="nav-item active">
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-outline-success mx-2 my-1 btn-sm" data-toggle="modal"
-              data-target="#loginModal">Login</button>
-          </li>
-          <li class="nav-item">
-            <button type="button" class="btn btn-success mx-1 my-1 btn-sm" data-toggle="modal"
-              data-target="#singupModal">Register</button>
-          </li>
-          {% endif %}
+<!--          {% else %}-->
+<!--          <li class="nav-item active">-->
+<!--            &lt;!&ndash; Button trigger modal &ndash;&gt;-->
+<!--            <button type="button" class="btn btn-outline-success mx-2 my-1 btn-sm" data-toggle="modal"-->
+<!--              data-target="#loginModal">Login</button>-->
+<!--          </li>-->
+<!--          <li class="nav-item">-->
+<!--            <button type="button" class="btn btn-success mx-1 my-1 btn-sm" data-toggle="modal"-->
+<!--              data-target="#singupModal">Register</button>-->
+<!--          </li>-->
+<!--          {% endif %}-->
         </ul>
       </div>
     </div>
   </nav>
 
+<!-- Optional JavaScript -->
+  {% if user.is_authenticated %}{% else %}
+  <script type="text/javascript" src="{% static 'js/validation.js' %}"></script>
+  {% endif %}
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+    crossorigin="anonymous"></script>
+
+{% block js %}
+{% endblock js %}
+{% endblock body %}
 </body>
 
 <html>
