@@ -1,0 +1,199 @@
+{% extends 'course/courses.html' %}
+{% load static %}
+<!--{% block content %}-->
+<!--{% load static %}-->
+<!--{% block title %}Checkout | {{ course.title }} | Courses Details-->
+<!--{% endblock title %}-->
+
+<html lang="en-us" dir="ltr" xmlns="http://www.w3.org/1999/html">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <title> Course </title>
+<!--   {% block head %}-->
+<!--    {% endblock head %}-->
+  <style>
+    .showpassword {
+      cursor: pointer;
+    }
+
+    .showpasswordsingup {
+      cursor: pointer;
+    }
+
+    /*
+ * Footer
+ */
+    .blog-footer {
+      padding: 2.5rem 0;
+      color: #999;
+      text-align: center;
+      background-color: #f9f9f9;
+      border-top: .05rem solid #e5e5e5;
+    }
+
+    .blog-footer p:last-child {
+      margin-bottom: 0;
+    }
+  </style>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+</head>
+
+<!--{% block body %}-->
+<body>
+<div class="container my-4">
+    <h2>Check Out</h2>
+    <div class="row my-2">
+        <div class="col-1"></div>
+        <div class="col-4">
+            <div class="card my-4 mx-3 shadow-lg p-3 mb-5 bg-white rounded" style="width: 18rem;">
+                <img src="{{ course.thumbnail_url }}" class="card-img-top" alt="Course Thumbnail" height="150">
+                <div class="card-body">
+                    <h5 class="card-title">{{ course.title }}</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><img src="https://img.icons8.com/android/20/000000/time.png" />
+                        {{ course.course_length }}</li>
+                    <li class="list-group-item"><img src="https://img.icons8.com/metro/20/000000/price-tag-euro.png" />
+                        {% if course.course_type == "PAID" %}₹ {{ course.course_price }}
+                        /-{% else %}{{ course.course_type }}{% endif %}</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-6">
+            <h3 class="my-2">Your cart</h3>
+            <div class="card my-4 shadow-lg bg-white rounded">
+                <div class="card-body">
+                    <center>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><img
+                                    src="https://img.icons8.com/metro/20/000000/price-tag-euro.png" />
+                                {% if course.course_type == "PAID" %}₹ {{ course.course_price }}
+                                /-{% else %}{{ course.course_type }}{% endif %}</li>
+                        </ul>
+                        {% if course.course_type == "FREE" %}<a href="{% url 'FreeCheckout' course.course_slug %}">
+                        <button class="btn btn-outline-success"><img
+                                src="https://img.icons8.com/ios/19/000000/lock--v2.png" /> Continue to
+                            checkout</button></a>
+                        {% else %}
+                        <form method="post" action="Checkout"></form>
+                        <button class="btn btn-outline-success" id="checkout_button">
+                             Continue to
+                            checkout</button>
+                        </form>
+                        {% endif %}
+                    </center>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--{% if payment %}-->
+<!--<script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>-->
+<!--    <script src="https://js.stripe.com/v3/"></script>-->
+<!--<section>-->
+<!--      <div class="product">-->
+<!--        <img src="https://i.imgur.com/EHyR2nP.png" alt="The cover of Stubborn Attachments" />-->
+<!--        <div class="description">-->
+<!--          <h3>Stubborn Attachments</h3>-->
+<!--          <h5>$20.00</h5>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <form action="/create-checkout-session" method="POST">-->
+<!--        <button type="submit" id="checkout-button">Checkout</button>-->
+<!--      </form>-->
+<!--    </section>-->
+<!--<script>
+    var options = {
+        "key": "{{key}}", // Enter the Key ID generated from the Dashboard
+        "amount": "{{payment.amount}}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        "currency": "INR",
+        "name": "Startup",
+        "description": "{{course.title}}",
+        "image": "https://cdn3.vectorstock.com/i/1000x1000/66/97/startup-logo-vector-19136697.jpg",
+        "order_id": "{{payment.id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        "callback_url": "/validate/course/check-payment/payment-ckecking",
+        "prefill": {
+            "name": "{{student.username}}",
+            "email": "{{student.email_id}}",
+            "contact": "{{student.mobile_no}}"
+        },
+        "notes": {
+            "address": "Razorpay Corporate Office"
+        },
+        "theme": {
+            "color": "#3399cc"
+        }
+    };
+    var rzp1 = new Razorpay(options);
+    document.getElementById('rzp-button1').onclick = function (e) {
+        rzp1.open();
+        e.preventDefault();
+    }
+</script>{% endif %}-->
+<!--<script src="https://js.stripe.com/v3/"></script>-->
+<!--{% block js %}-->
+<!--<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"-->
+<!--    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"-->
+<!--    crossorigin="anonymous"></script>-->
+<!--  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"-->
+<!--    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"-->
+<!--    crossorigin="anonymous"></script>-->
+<!--  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"-->
+<!--    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"-->
+<!--    crossorigin="anonymous"></script>-->
+<!--<script src="https://js.stripe.com/v3/"></script>-->
+<script type="text/javascript">
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    // Create an instance of the Stripe object with your publishable API key
+    var stripe = Stripe("{{ STRIPE_PUBLIC_KEY }}");
+    var checkoutButton = document.getElementById("checkout_button");
+    checkoutButton.addEventListener("click", function () {
+      fetch("{% url 'Checkout' course.course_slug %}", {
+        method: "POST",
+        headers: {
+            'X-CSRFToken': csrftoken
+        }
+      })
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (session) {
+          return stripe.redirectToCheckout({ sessionId: session.id });
+        })
+        .then(function (result) {
+          // If redirectToCheckout fails due to a browser or network
+          // error, you should display the localized error message to your
+          // customer using error.message.
+          if (result.error) {
+            alert(result.error.message);
+          }
+        })
+        .catch(function (error) {
+          console.error("Error:", error);
+        });
+    });
+</script>
+
+<!-- Optional JavaScript -->
+<!--  {% if user.is_authenticated %}{% else %}-->
+<!--  <script type="text/javascript" src="{% static 'js/validation.js' %}"></script>-->
+<!--  {% endif %}-->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+
+<!--{% endblock js %}-->
+<!--{% endblock body %}-->
+<!--{% endblock content %}-->
+</body>
+</html>

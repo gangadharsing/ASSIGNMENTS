@@ -1,0 +1,187 @@
+{% extends 'teacher/index.html' %}
+{% load static %}
+{% block title %} {{ video.title }} | {{ course.title }}
+{% endblock title %}
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+  <title> Lecture </title>
+  {% block head %}
+  {% endblock head %}
+  <style>
+   html, body{
+        min-height: 100% !important;
+    }
+    section{
+        border-radius: 10px !important;
+    }
+
+    .showpassword {
+      cursor: pointer;
+    }
+
+    .showpasswordsingup {
+      cursor: pointer;
+    }
+
+    /*
+ * Footer
+ */
+    .blog-footer {
+      padding: 2.5rem 0;
+      color: #999;
+      text-align: center;
+      background-color: #f9f9f9;
+      border-top: .05rem solid #e5e5e5;
+    }
+
+    .blog-footer p:last-child {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+{% load humanize %}
+{% block body %}
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom shadow-sm">
+    <div class="container">
+        <div class="container mx-auto flex flex-wrap p-1 flex-col md:flex-row items-center">
+      <a class="navbar-brand" href="{% url 'home' %}">Home</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'lecture' %}">Lecture </a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'pricing' %}">Premium</a>
+          </li>
+        </ul>
+        {% if user %}
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown active">
+            <a class="nav-link dropdown-toggle" href="#" id="studentDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <img src="https://img.icons8.com/color/24/000000/user-male-circle.png"/> {{ request.user|upper }}
+            </a>
+            <div class="dropdown-menu" aria-labelledby="studentDropdown">
+             <a class="dropdown-item" href="{% url 'lecture' %}">User Account</a>
+                <div class="dropdown-divider"></div>
+             <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+            </div>
+          </li>
+          {% else %}
+          <!--<li class="nav-item active">
+            Button trigger modal
+            <button type="button" class="btn btn-outline-success mx-2 my-1 btn-sm" data-toggle="modal"
+              data-target="#loginModal">Login</button>
+          </li>
+          <li class="nav-item">
+            <button type="button" class="btn btn-success mx-1 my-1 btn-sm" data-toggle="modal"
+              data-target="#singupModal">Register</button>
+          </li>-->
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+    </div>
+  </nav>
+<div class="container-fluid my-3">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+                <div class="card-header">
+                    {{ course.title }}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ lecture.title }}</h5>
+                    <div class="accordion" id="accordionExample">
+                        {% for section in section %}
+                        <div class="card">
+                            <div class="card-header" id="headingOne{{ section.id }}">
+                                <h2 class="mb-0">
+                                    <button class="btn btn-block text-left collapsed" type="button"
+                                        data-toggle="collapse" data-target="#collapseOne{{ section.id }}"
+                                        aria-expanded="true" aria-controls="collapseOne{{ section.id }}">
+                                        <img src="https://img.icons8.com/pastel-glyph/15/000000/plus.png" />
+                                        {{ section.title }}
+                                    </button>
+                                </h2>
+                            </div>
+                            <div id="collapseOne{{ section.id }}" class="collapse show"
+                                aria-labelledby="headingOne{{ section.id }}" data-parent="#accordionExample">
+                                <div class="card-body">{% for lecture in lecture %}{% if lecture.section == section %}
+                                {% if lecture.lecture_type == "NOT PREMIUM" %}
+                                    <li><a href="{{ lecture.lecture_slug }}">{{ lecture.title }}</a>
+                                    </li>{% else %}<li>{{ lecture.title }} <span class="badge badge-pill badge-secondary">PREMIUM VIDEO</span></li>
+                                    {% endif %}{% else %}{% endif %}{% endfor %}
+                                </div>
+                            </div>
+                        </div>{% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <h5 class="card-header">{{ video.title }}</h5>
+                <div class="card-body">
+                    <iframe width="100%" height="450" src="{{ video.video_url }}"></iframe>
+                </div>
+            </div>
+            <div class="card shadow-lg my-4">
+                <div class="card-body">
+                    <h3 class="card-title">Comments: ({{ lecture_comment.count }})</h3>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <form action="/courses/lecture/comment" method="post">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="comment" id="comment"
+                                        aria-describedby="text" placeholder="Enter Comment here">
+                                </div>
+                                <input type="hidden" name="lecture_id" id="lecture_id" value="{{ video.id }}">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                    {% for comment in lecture_comment reversed %}
+                    <div class="row my-3">
+                        <div class="col-md-1"><img src="https://img.icons8.com/doodle/50/000000/user-male.png" /></div>
+                        <div class="col-md-11"><b> {{ comment.user.username }}</b> <span class="badge badge-secondary">
+                                {{ comment.timestamp | naturaltime }}</span>
+                            <div> {{ comment.comment}}</div>
+                        </div>
+                    </div>{% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Optional JavaScript -->
+  {% if user.is_authenticated %}{% else %}
+  <script type="text/javascript" src="{% static 'js/validation.js' %}"></script>
+  {% endif %}
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+    crossorigin="anonymous"></script>
+
+{% block js %}
+{% endblock js %}
+{% endblock body %}
+</body>

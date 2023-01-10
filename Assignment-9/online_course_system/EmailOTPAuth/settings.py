@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.humanize',
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
@@ -149,3 +150,5 @@ django_heroku.settings(locals())
 PAYPAL_RECEIVER_EMAIL = 'coursepayment@gmail.com'
 PAYPAL_TEST = True
 
+STRIPE_API_KEY_PUBLISHABLE = 'pk_test_51MI7DHJnAIu7pG73H85CrwAGanKFeC1ya2EFxaO12cWKBHi9IWqPC4Qtiv2vIkdzrnJD3app3pVrLleOcHJy5ITK00GDYrdk57'
+STRIPE_API_KEY_HIDDEN = 'sk_test_51MI7DHJnAIu7pG730ZPPKtbOyno1KvIX98lLSLQHPmnesZN9auS6xmMS5Wt3mJbsmc2MW8PuBe6MePwmibWokIUm00hf8nl8n5'

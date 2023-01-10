@@ -2,9 +2,11 @@ from django.contrib.auth import login, authenticate, logout
 from user.models import User
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
-from .models import OTPLog
+from .models import OTPLog, Profile
 from .email import email_message
 import random
+from student.models import StudentInfo
+from teacher.models import TeacherInfo
 
 
 def signin(request):
@@ -46,11 +48,14 @@ def signup(request):
                 context["reg_errors"].append("Email already in use!")
 
             else:
-                request.session['user_type'] = request.POST.get('user_type')
+                request.session['username'] = request.POST.get('username')
                 request.session['f_name'] = request.POST.get('f_name')
                 request.session['l_name'] = request.POST.get('l_name')
                 request.session['email'] = request.POST.get('email')
                 request.session['password'] = request.POST.get('password1')
+                request.session['usertype'] = request.POST['usertype']
+                request.session['mobile_no'] = request.POST['mobile_no'],
+                request.session['address'] = request.POST['address'],
 
                 try:
                     otp = OTPLog.objects.get(email=request.POST.get('email')).otp
@@ -70,32 +75,62 @@ def signup(request):
 def reg_otp_view(request):
     context = {
         'title': 'OTP Verification',
-        'email': request.session['email']
+        'email': request.session['email'],
     }
 
-    if request.POST == "GET":
-        print("Resend OTP")
+    # if request.POST == "GET":
+    #     print("Resend OTP")
 
     print(OTPLog.objects.get(email=request.session['email']).otp)
     if request.method == "POST":
         otp = OTPLog.objects.get(email=request.session['email'])
         if int(request.POST.get('otp')) == int(otp.otp):
+            # username = request.session['email'],
+            # first_name=request.session['f_name'],
+            # last_name=request.session['l_name'],
+            # email=request.session['email'],
+            # password=request.session['password']
+            # user = User(username=request.session['email'],first_name=request.session['f_name'],last_name=request.session['l_name'],email=request.session['email'],password=request.session['password'])
+            # User.objects.create_user(user)
             User.objects.create_user(
-                usertype=request.session['usertype'],
+                username=request.session['username'],
                 first_name=request.session['f_name'],
                 last_name=request.session['l_name'],
                 email=request.session['email'],
                 password=request.session['password']
             )
-            request.session['usertype'] = request.POST.get('user_type')
-            user = authenticate(request, username=request.session['email'], password=request.session['password'])
-
-            if user is not None:
-                login(request, user)
-                if request.session['usertype'] == 'teacher':
-                    return redirect('/teacher/index')
-                elif request.session['usertype'] == 'student':
+            user = User.objects.get(username=request.session['username'])
+            usertype = request.session['usertype'],
+            email = request.session['email'],
+            mobile_no = request.session['mobile_no'],
+            # dob = request.session['dob'],
+            address = request.session['address'],
+            pro = Profile(user=user, usertype=request.session['usertype'], email=request.session['email'], mobile_no=request.session['mobile_no'], address=request.session['address'])
+            pro.save()
+            if request.session['usertype'] == 'STUDENT':
+                student = StudentInfo(user=user,email_id=request.session['email'], mobile_no=request.session['mobile_no'], address=request.session['address'])
+                student.save()
+                user = authenticate(request, username=request.session['email'], password=request.session['password'])
+                if user is not None:
+                    login(request, user)
                     return redirect('/student/index')
+            elif request.session['usertype'] == 'TEACHER':
+                teacher = TeacherInfo(user=user, email_id=request.session['email'], mobile_no=request.session['mobile_no'], address=request.session['address'])
+                teacher.save()
+                user = authenticate(request, username=request.session['email'], password=request.session['password'])
+                if user is not None:
+                    login(request, user)
+                    return redirect('/teacher/index')
+            # if user is not None:
+            #     login(request, user)
+            #     if usertype == 'TEACHER':
+            #         return redirect('/teacher/index')
+            #     elif usertype == 'STUDENT':
+            #         return redirect('/student/index')
+            #     else:
+            #         return ('/teacher/addcourse')
+            else:
+                 context['error'] = "Invalid credentials"
         else:
             context['error'] = "Wrong OTP"
     return render(request, 'user/otp.html', context)
@@ -115,10 +150,11 @@ def login_otp_view(request):
     if request.method == "POST":
         request.session['usertype']=request.POST.get('user_type')
         otp = OTPLog.objects.get(email=request.session['email'])
+        prof=Profile.objects.get(email=request.session['email'])
         if int(request.POST.get('otp')) == int(otp.otp):
-            if request.session['usertype'] == 'teacher':
+            if prof.usertype == 'TEACHER':
                 return redirect('/teacher/index')
-            elif request.session['usertype'] == 'student':
+            elif prof.usertype == 'STUDENT':
                 return redirect('/student/index')
                 # return redirect('user_selection')
         else:

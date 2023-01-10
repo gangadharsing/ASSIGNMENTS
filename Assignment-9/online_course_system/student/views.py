@@ -11,6 +11,7 @@ def info(request):
         return render(request, "student/info.html")
     return redirect("home")
 
+
 def index(request):
     return render(request,"student/index.html")
 
@@ -29,28 +30,30 @@ def ChangePassword(request):
 
 
 def unsubscribe(request,slug):
-    user = StudentInfo.objects.filter(username=request.user).first()
+    user = StudentInfo.objects.filter(user=request.user).first()
     course = Course.objects.filter(course_slug=slug).first()
     ucourse = CourseSubscription.objects.filter(student=user)
     contest = {
         "ucourse": ucourse,
     }
     unsubscription_course = CourseSubscription.objects.filter(
-        student=StudentInfo.objects.filter(username=request.user).first(),
+        student=StudentInfo.objects.filter(user=request.user).first(),
         course=course).first()
     unsubscription_course.delete()
 
     return render(request, 'student/user_course.html',contest)
 
+
 def UserCourse(request):
     if request.user.is_authenticated == True:
-        user = StudentInfo.objects.filter(username=request.user).first()
+        user = StudentInfo.objects.filter(user=request.user).first()
         ucourse = CourseSubscription.objects.filter(student=user)
         contest = {
             "ucourse":ucourse,
         }
         return render(request, "student/user_course.html", contest)
     return redirect("home")
+
 
 def logout_view(request):
     logout(request)

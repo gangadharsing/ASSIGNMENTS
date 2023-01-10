@@ -33,7 +33,7 @@ def addcourse(request):
         new_course = Course(title=title, description=description, thumbnail_url=thumbnail_url, course_type=course_type,course_length=course_length,course_price=course_price)
         new_course.save()
         course=Course.objects.filter(title=title).first()
-        teacher = TeacherInfo.objects.filter(username=request.user).first()
+        teacher = TeacherInfo.objects.filter(user=request.user).first()
         new_sub = CourseAdded(teacher=teacher, course=course)
         new_sub.save()
         return redirect('AddedCourse')
@@ -41,7 +41,7 @@ def addcourse(request):
 
 def AddedCourse(request):
     if request.user.is_authenticated == True:
-        user1 = TeacherInfo.objects.filter(username=request.user).first()
+        user1 = TeacherInfo.objects.filter(user=request.user).first()
         tcourse = CourseAdded.objects.filter(teacher=user1)
         contest = {
             "tcourse":tcourse,

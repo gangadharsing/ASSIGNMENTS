@@ -1,0 +1,25 @@
+{% extends "base/base.html" %}
+{% block content %}
+{% load static %}
+<html lang="en" class="text-gray-900 antialiased leading-tight">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=0.8, minimum-scale=0.8"/>
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <title>Demo | {{ title }}</title>
+</head>
+ <div class="jumbotron jumbotron-fluid" style="padding: 150px">
+        <div class="container">
+            <h1 class="display-3">StartUP!!</h1>
+            <p class="lead">Welcome to Online Course Learning Dashboard...........</p>
+        </div>
+    </div>
+    </div>
+<body class="min-h-screen bg-gray-100">
+<!--            <img src="static/images/Courses.png"/>-->
+
+{% include 'base/footer.html' %}
+</body>
+</html>
+{% endblock %}

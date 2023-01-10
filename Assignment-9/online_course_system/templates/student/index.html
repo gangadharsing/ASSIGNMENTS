@@ -46,6 +46,7 @@
 </head>
 {% block body %}
 <body>
+{% block content %}
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom shadow-sm">
     {% if user.is_authenticated %}
     <div class="container">
@@ -59,6 +60,9 @@
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
             <a class="nav-link" href="{% url 'courses' %}">Courses </a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'pricing' %}">Premium</a>
           </li>
 
         </ul>
@@ -88,15 +92,17 @@
       </div>
       </div>
   </nav>
-
-  <div class="container">
-    <form class="search" action="{% url 'search' %}">
-  <input type="text" placeholder="Search.." name="search">
-<!--  <a href="{% url 'search' %}">-->
-      <button type="search"><i class="fa fa-search"></i></button>
-<!--  </a>-->
-</form>
-  </div>
+{% endblock content%}
+<!--  <div class="container">-->
+<!--    <center>-->
+<!--    <form class="search" action="{% url 'search' %}">-->
+<!--  <input type="text" placeholder="Search.." name="search">-->
+<!--&lt;!&ndash;  <a href="{% url 'search' %}">&ndash;&gt;-->
+<!--      <button type="search"><i class="fa fa-search"></i></button>-->
+<!--&lt;!&ndash;  </a>&ndash;&gt;-->
+<!--</form>-->
+<!--    </center>-->
+<!--  </div>-->
 
 
   <!-- Optional JavaScript -->

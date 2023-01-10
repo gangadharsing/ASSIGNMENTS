@@ -1,0 +1,229 @@
+{% extends 'teacher/index.html' %}
+{% load static %}
+{% block title %}Add Course
+{% endblock title %}
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    {% block head %}
+   {% endblock head %}
+  <style>
+  html, body{
+        min-height: 100% !important;
+    }
+    section{
+        border-radius: 10px !important;
+    }
+
+    .showpassword {
+      cursor: pointer;
+    }
+
+    .showpasswordsingup {
+      cursor: pointer;
+    }
+
+    /*
+ * Footer
+ */
+    .blog-footer {
+      padding: 2.5rem 0;
+      color: #999;
+      text-align: center;
+      background-color: #f9f9f9;
+      border-top: .05rem solid #e5e5e5;
+    }
+
+    .blog-footer p:last-child {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+{% block body %}
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom shadow-sm">
+      <ul class="navbar-nav mr-auto">
+                 <li class="nav-item active">
+                     <a class="btn btn-basic focus:shadow-outline text-white" type="button" href="index{{ index }}">Back </a>
+                 </li>
+             </ul>
+    <div class="container">
+        <div class="container mx-auto flex flex-wrap p-1 flex-col md:flex-row items-center">
+      <a class="navbar-brand" href="{% url 'home' %}">HOME</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+           <a class="nav-link" href="{% url 'course_list' %}">Course Details</a>
+        </li>
+<!--          <li class="nav-item active">-->
+<!--            <a class="nav-link" href="{% url 'pricing' %}"> Premium </a>-->
+<!--          </li>-->
+
+        </ul>
+        <ul class="navbar-nav">
+          {% if user.is_authenticated %}
+          <li class="nav-item dropdown active">
+        <a class="nav-link dropdown-toggle" href="#" id="studentDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+         <img src="https://img.icons8.com/color/24/000000/user-male-circle.png"/> {{ request.user|upper }}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="studentDropdown">
+          <a class="dropdown-item" href="info{{ info }}">User Account</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+        </div>
+      </li>
+          {% else %}
+          <!--<li class="nav-item active">
+             Button trigger modal
+            <button type="button" class="btn btn-outline-success mx-2 my-1 btn-sm" data-toggle="modal"
+              data-target="#loginModal">Login</button>
+          </li>
+          <li class="nav-item">
+            <button type="button" class="btn btn-success mx-1 my-1 btn-sm" data-toggle="modal"
+              data-target="#singupModal">Register</button>
+          </li>-->
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+    </div>
+  </nav>
+  <div class="container-fluid">
+    <div class="row">
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <div class="sidebar-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'add-course' %}">
+                            <img src="https://cdn-icons-png.flaticon.com/24/2997/2997495.png" />
+                            Add Course
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'update' %}">
+                            <img src="https://cdn.iconscout.com/icon/premium/png-24-thumb/arrows-377-780707.png" />
+                            Update Course
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'delete' %}">
+                            <img src="https://cdn.iconscout.com/icon/free/png-24/delete-736-470378.png" />
+                            Delete Course
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- Content -->
+
+  <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+              <div id="content" class="colM">
+                  <br><h1>Add course</h1>
+          <div id="content-main">
+                  <form class="w-full max-w-sm" method="post" >{% csrf_token %}
+        <div class="row">
+        <div class="col-md-1"></div>
+            <div class="col-md-4">
+                <fieldset class="module aligned ">
+                    <div class="form-row field-title">
+                        <div class="form-group">
+                            <label class="required" for="id_title">Title:</label>
+                            <input type="text" name="title" class="form-control form-control-md vTextField" maxlength="100" required="" id="id_title">
+                        </div>
+                    </div>
+                    <div class="form-row field-description">
+                        <div class="form-group">
+                            <label class="required" for="id_description">Description:</label>
+                            <textarea name="description" cols="40" rows="4" class="form-control vLargeTextField" required="" id="id_description"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row field-thumbnail_url">
+                        <div class="form-group">
+                            <label class="required" for="id_thumbnail_url">Thumbnail url:</label>
+                            <input type="text" name="thumbnail_url" class="form-control form-control-md vTextField" maxlength="100" required="" id="id_thumbnail_url">
+                        </div>
+                    </div>
+                    <div class="form-row field-course_type">
+                        <div class="form-group">
+                            <label class="required" for="id_course_type">Course type:</label>
+                            <select name="course_type" class="form-control form-control-md" id="id_course_type">
+                                <option value="FREE" selected="">FREE</option>
+                                <option value="PAID">PAID</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row field-course_length">
+                        <div class="form-group">
+                            <label class="required" for="id_course_length">Course length:</label>
+                            <input type="text" name="course_length" class="form-control form-control-md vTextField" maxlength="20" required="" id="id_course_length">
+                        </div>
+                    </div>
+                    <div class="form-row field-course_price">
+                        <div class="form-group">
+                            <label class="required" for="id_course_price">Course price:</label>
+                            <input type="number" name="course_price" value="0" class="form-control form-control-md vIntegerField" required="" id="id_course_price">
+                        </div>
+                    </div>
+                </fieldset>
+                <!--<fieldset class="module aligned ">
+                <div class="form-row field-course_slug">
+                 <div>
+                <label>Course slug:</label>
+                <div class="readonly">-</div>
+                 </div>
+                 </div>
+                 </fieldset>-->
+                <div class="submit-row">
+                    <input type="submit" value="Save" class="btn btn-info" name="_save">
+                    <input type="submit" value="Save and add another" class="btn btn-info" name="addanother">
+                    <!--<input type="submit" value="Save and continue editing" class="btn btn-info" name="_continue">-->
+                </div>
+            </div>
+        </div>
+    </form>
+              </div>
+<canvas class="my-3 w-80 chartjs-render-monitor" id="myChart" width="1080" height="20"
+        style="display: block; width: 1080px; height: 20px;"></canvas>
+              </div>
+  </main>
+    </div>
+  </div>
+
+
+
+<!--<footer class="blog-footer"style="position: fixed; width: 100vw;">
+    <p>Made with ❤ by <a href="https://twitter.com">@Online course</a></p>
+    <p>
+      <a href="#">Back to top</a>
+    </p>
+  </footer>-->
+
+  <!-- Optional JavaScript -->
+  {% if user.is_authenticated %}{% else %}
+  <script type="text/javascript" src="{% static 'js/validation.js' %}"></script>
+  {% endif %}
+     <!--jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+    crossorigin="anonymous"></script>
+{% block js %}
+{% endblock js %}
+{% endblock body %}
+  </div>
+</body>
